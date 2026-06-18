@@ -15,4 +15,4 @@ ENV NODE_ENV=production
 ENV PORT=9030
 COPY --from=builder /app ./
 EXPOSE 9030
-CMD ["npm", "run", "start"]
+CMD ["sh", "-c", "npm run predeploy && npm run start"]
