@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GEEX Order Confirmation</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #050607; line-height: 1.6; background: #f8fbfd; }
+    .container { max-width: 600px; margin: 0 auto; padding: 24px; background: #ffffff; border: 1px solid #dce6ec; }
+    .header { border-bottom: 1px solid #dce6ec; padding-bottom: 20px; margin-bottom: 20px; }
+    .header h1 { margin: 0; color: #050607; letter-spacing: 4px; }
+    .details { background: #eef5f8; padding: 15px; margin-bottom: 20px; }
+    .details p { margin: 5px 0; }
+    .footer { font-size: 12px; color: #5e6872; text-align: center; margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>GEEX</h1>
+      <p style="margin: 6px 0 0; color: #48afcf; font-size: 12px; font-weight: 700; text-transform: uppercase;">Order confirmed</p>
+    </div>
+    <p>Hi there,</p>
+    <p>We have received your GEEX order and are preparing your electronics and accessories for tracked delivery.</p>
+
+    <div class="details">
+      <p><strong>Order ID:</strong> {{id}}</p>
+      <p><strong>Total Amount:</strong> {{total}}</p>
+    </div>
+
+    <p>You will receive tracking details once your order ships. Reply to this email if you need setup or compatibility help.</p>
+
+    <div class="footer">
+      <p>&copy; GEEX. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
