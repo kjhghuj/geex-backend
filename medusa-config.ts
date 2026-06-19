@@ -2,6 +2,12 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
+const backendUrl =
+  process.env.MEDUSA_BACKEND_URL ||
+  (process.env.NODE_ENV === "production"
+    ? "https://api.geexfans.com"
+    : "http://localhost:9030")
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
@@ -69,7 +75,7 @@ module.exports = defineConfig({
   ],
   admin: {
     // 启用中文语言支持
-    backendUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9030",
+    backendUrl,
   }
 })
 
