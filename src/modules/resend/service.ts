@@ -90,6 +90,10 @@ function renderOrderPlaced(data: any, frontendUrl: string) {
   const currencyCode = data.currency_code || "USD";
   const items = Array.isArray(data.items) ? data.items : [];
   const shippingName = data.shipping_methods?.[0]?.name || "Shipping";
+  const storefrontUrl = frontendUrl.replace(/\/$/, "");
+  const logoUrl = `${storefrontUrl}/brand/geex-logo-lockup.png`;
+  const orderLookupUrl = `${storefrontUrl}/order/lookup?order=${encodeURIComponent(orderId)}&email=${encodeURIComponent(data.email || "")}`;
+  const brandFont = "'Arial Black','Microsoft YaHei UI','Microsoft YaHei',SimHei,Arial,sans-serif";
 
   const itemsHtml = items.map((item: any) => {
     const itemName = item.title || item.product_title || "GEEX product";
@@ -97,55 +101,119 @@ function renderOrderPlaced(data: any, frontendUrl: string) {
     const itemQty = item.quantity || 1;
     const itemPrice = formatMoney(item.unit_price || 0, currencyCode);
     const itemTotal = formatMoney((item.unit_price || 0) * itemQty, currencyCode);
-    const itemImage = item.thumbnail || `${frontendUrl}/placeholder.svg`;
+    const itemImage = item.thumbnail || `${storefrontUrl}/placeholder.svg`;
 
     return `<tr>
-      <td style="padding:18px 0;border-bottom:1px solid #dce6ec;">
+      <td style="padding:17px 0;border-top:1px solid #dce6ec;">
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="76" valign="top">
-              <img src="${itemImage}" alt="${itemName}" width="76" height="76" style="display:block;object-fit:cover;background:#eef5f8;">
+            <td width="82" valign="top">
+              <img src="${itemImage}" alt="${itemName}" width="82" height="82" style="display:block;width:82px;height:82px;object-fit:cover;background:#eef5f8;border:1px solid #dce6ec;">
             </td>
-            <td valign="top" style="padding-left:16px;">
-              <div style="font-size:15px;font-weight:800;">${itemName}</div>
-              ${itemVariant ? `<div style="margin-top:4px;font-size:12px;color:#5e6872;">${itemVariant}</div>` : ""}
-              <div style="margin-top:6px;font-size:12px;color:#5e6872;">Qty ${itemQty} x ${itemPrice}</div>
+            <td valign="middle" style="padding-left:16px;">
+              <div style="font-size:15px;font-weight:900;color:#050607;">${itemName}</div>
+              ${itemVariant ? `<div style="margin-top:6px;font-size:12px;line-height:20px;color:#5e6872;">${itemVariant}</div>` : ""}
+              <div style="font-size:12px;line-height:20px;color:#5e6872;">Qty ${itemQty} x ${itemPrice}</div>
             </td>
-            <td align="right" valign="top" style="font-size:14px;font-weight:800;white-space:nowrap;">${itemTotal}</td>
+            <td align="right" valign="middle" style="font-size:14px;font-weight:900;color:#050607;white-space:nowrap;">${itemTotal}</td>
           </tr>
         </table>
       </td>
     </tr>`;
   }).join("");
 
-  return baseEmail(`
-    <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#48afcf;">Order #${orderId}</div>
-    <h1 style="margin:10px 0 18px;font-size:28px;line-height:1.2;">Your GEEX order is confirmed.</h1>
-    <p style="margin:0 0 24px;font-size:15px;line-height:26px;color:#5e6872;">
-      Hi ${firstName}, thanks for choosing GEEX. We are preparing your electronics and accessories for tracked delivery.
-    </p>
-    ${itemsHtml ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-top:1px solid #dce6ec;">${itemsHtml}</table>` : ""}
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:22px;">
-      <tr>
-        <td style="padding:7px 0;color:#5e6872;">Subtotal</td>
-        <td align="right" style="padding:7px 0;">${formatMoney(data.subtotal || data.total || 0, currencyCode)}</td>
-      </tr>
-      <tr>
-        <td style="padding:7px 0;color:#5e6872;">${shippingName}</td>
-        <td align="right" style="padding:7px 0;">${formatMoney(data.shipping_total || 0, currencyCode)}</td>
-      </tr>
-      <tr>
-        <td style="padding:14px 0 0;border-top:1px solid #dce6ec;font-size:18px;font-weight:900;">Total</td>
-        <td align="right" style="padding:14px 0 0;border-top:1px solid #dce6ec;font-size:18px;font-weight:900;color:#48afcf;">${formatMoney(data.total || 0, currencyCode)}</td>
-      </tr>
-    </table>
-    <p style="margin:30px 0;text-align:center;">
-      <a href="${frontendUrl}/order/lookup?order=${orderId}&email=${data.email || ""}" style="display:inline-block;background:#050607;color:#ffffff;padding:14px 28px;text-decoration:none;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;">View Order Details</a>
-    </p>
-    <div style="padding:18px;background:#f8fbfd;border:1px solid #dce6ec;color:#5e6872;font-size:13px;line-height:22px;">
-      <strong style="color:#050607;">Next:</strong> We will pack your order, hand it to the carrier, and send tracking details once it ships. Need compatibility help? Reply to this email.
-    </div>
-  `);
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GEEX Order Confirmation</title>
+</head>
+<body style="margin:0;background:#f8fbfd;color:#050607;font-family:Arial,Helvetica,sans-serif;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f8fbfd;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="640" cellspacing="0" cellpadding="0" style="max-width:640px;width:100%;background:#ffffff;border:1px solid #dce6ec;">
+          <tr>
+            <td style="padding:34px 42px 32px;border-bottom:1px solid #dce6ec;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="left" valign="top">
+                    <img src="${logoUrl}" alt="GEEX" width="188" style="display:block;width:188px;max-width:188px;height:auto;border:0;">
+                    <div style="margin-top:14px;color:#48afcf;font-family:${brandFont};font-size:11px;font-weight:900;letter-spacing:1.2px;line-height:1;text-transform:uppercase;">Everyday electronics for better setups</div>
+                  </td>
+                  <td align="right" valign="top">
+                    <span style="display:inline-block;background:#e8f7fb;border:1px solid #bde4ee;border-radius:999px;padding:8px 13px;color:#117e96;font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;">Order confirmed</span>
+                  </td>
+                </tr>
+              </table>
+              <h1 style="width:420px;max-width:100%;margin:48px 0 14px;color:#050607;font-family:${brandFont};font-size:34px;font-weight:900;line-height:1.12;letter-spacing:0;">Your setup gear is confirmed.</h1>
+              <p style="max-width:470px;margin:0;color:#5e6872;font-size:15px;line-height:25px;">Hi ${firstName}, we received your order and are preparing your electronics and accessories for tracked delivery.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-bottom:1px solid #dce6ec;">
+                <tr>
+                  <td width="33.33%" style="padding:14px 20px;border-right:1px solid #dce6ec;">
+                    <div style="margin-bottom:5px;color:#5e6872;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;">Order</div>
+                    <div style="color:#050607;font-size:14px;font-weight:800;white-space:nowrap;">#${orderId}</div>
+                  </td>
+                  <td width="33.33%" style="padding:14px 20px;border-right:1px solid #dce6ec;">
+                    <div style="margin-bottom:5px;color:#5e6872;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;">Status</div>
+                    <div style="color:#18a058;font-size:14px;font-weight:800;white-space:nowrap;">Paid</div>
+                  </td>
+                  <td width="33.33%" style="padding:14px 20px;">
+                    <div style="margin-bottom:5px;color:#5e6872;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;">Next update</div>
+                    <div style="color:#050607;font-size:14px;font-weight:800;white-space:nowrap;">Tracking</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:34px 42px 40px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="left" style="padding:0 0 18px;font-size:18px;font-weight:900;color:#050607;">Items in your order</td>
+                  <td align="right" style="padding:0 0 18px;font-size:12px;font-weight:700;color:#5e6872;">${items.length} ${items.length === 1 ? "product" : "products"}</td>
+                </tr>
+              </table>
+              ${itemsHtml ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-bottom:1px solid #dce6ec;">${itemsHtml}</table>` : ""}
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:40px;background:#f3f8fb;border:1px solid #dce6ec;padding:22px;">
+                <tr>
+                  <td style="padding:7px 0;color:#5e6872;font-size:14px;">Subtotal</td>
+                  <td align="right" style="padding:7px 0;color:#050607;font-size:14px;font-weight:800;">${formatMoney(data.subtotal || data.total || 0, currencyCode)}</td>
+                </tr>
+                <tr>
+                  <td style="padding:7px 0;color:#5e6872;font-size:14px;">${shippingName}</td>
+                  <td align="right" style="padding:7px 0;color:#050607;font-size:14px;font-weight:800;">${formatMoney(data.shipping_total || 0, currencyCode)}</td>
+                </tr>
+                <tr>
+                  <td style="padding:16px 0 0;border-top:1px solid #dce6ec;color:#050607;font-size:20px;font-weight:900;">Total</td>
+                  <td align="right" style="padding:16px 0 0;border-top:1px solid #dce6ec;color:#31aeca;font-size:24px;font-weight:900;">${formatMoney(data.total || 0, currencyCode)}</td>
+                </tr>
+              </table>
+              <p style="margin:30px 0 0;text-align:center;">
+                <a href="${orderLookupUrl}" style="display:inline-block;background:#050607;color:#ffffff;padding:15px 30px;text-decoration:none;font-size:12px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase;">View Order Details</a>
+              </p>
+              <div style="margin-top:32px;padding:20px 22px;background:#e8f7fb;border:1px solid #bde4ee;color:#35515a;font-size:13px;line-height:22px;">
+                <strong style="color:#050607;">What happens next:</strong> We will pack your order, hand it to the carrier, and send tracking details as soon as it ships. Need compatibility or setup help? Reply to this email.
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:26px 42px 32px;background:#f8fbfd;border-top:1px solid #dce6ec;text-align:center;color:#5e6872;font-size:12px;line-height:20px;">
+              GEEX Setup Support<br>
+              <a href="mailto:${SUPPORT_EMAIL}" style="color:#48afcf;font-weight:800;text-decoration:none;">${SUPPORT_EMAIL}</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
 }
 
 class ResendNotificationProviderService extends AbstractNotificationProviderService {

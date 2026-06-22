@@ -1,0 +1,38 @@
+{
+  "announcementSettings": {
+    "title": "Announcement Bar",
+    "description": "Configure the top banner displayed on your storefront",
+    "enabled": {
+      "label": "Enable Announcement Bar",
+      "help": "Show or hide the banner on your store"
+    },
+    "message": {
+      "label": "English Message",
+      "placeholder": "e.g., Free shipping on orders over $79!",
+      "help": "The default text displayed in the announcement bar"
+    },
+    "messageZh": {
+      "label": "Chinese Message",
+      "placeholder": "e.g., 满 $79 全球免费配送",
+      "help": "Shown when the storefront or admin language is Chinese"
+    },
+    "link": {
+      "label": "Link (optional)",
+      "placeholder": "e.g., /shop or /sale",
+      "help": "Click destination URL. Leave empty for a non-clickable banner."
+    },
+    "preview": "Preview",
+    "actions": {
+      "save": "Save Changes",
+      "saving": "Saving..."
+    },
+    "toasts": {
+      "saved": "Settings saved successfully!",
+      "errorTitle": "Error",
+      "saveFailed": "Failed to save announcement settings. Please try again."
+    },
+    "errors": {
+      "saveFailed": "Failed to save announcement settings"
+    }
+  }
+}

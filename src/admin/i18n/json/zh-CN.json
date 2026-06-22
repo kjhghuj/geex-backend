@@ -1,0 +1,38 @@
+{
+  "announcementSettings": {
+    "title": "公告栏",
+    "description": "配置显示在店铺前台顶部的横幅",
+    "enabled": {
+      "label": "启用公告栏",
+      "help": "显示或隐藏店铺顶部横幅"
+    },
+    "message": {
+      "label": "英文文案",
+      "placeholder": "例如：Free shipping on orders over $79!",
+      "help": "公告栏默认显示的英文文案"
+    },
+    "messageZh": {
+      "label": "中文文案",
+      "placeholder": "例如：满 $79 全球免费配送",
+      "help": "当前台或后台语言为中文时显示"
+    },
+    "link": {
+      "label": "链接（可选）",
+      "placeholder": "例如：/shop 或 /sale",
+      "help": "点击公告栏跳转的地址。留空则不可点击。"
+    },
+    "preview": "预览",
+    "actions": {
+      "save": "保存更改",
+      "saving": "保存中..."
+    },
+    "toasts": {
+      "saved": "设置已保存！",
+      "errorTitle": "错误",
+      "saveFailed": "公告栏设置保存失败，请重试。"
+    },
+    "errors": {
+      "saveFailed": "公告栏设置保存失败"
+    }
+  }
+}

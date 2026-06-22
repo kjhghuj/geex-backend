@@ -27,6 +27,7 @@ build
 !.yarn/versions
 
 .medusa
+tmp/
 
 # Security: Prevent credential files from being committed
 keys.json
