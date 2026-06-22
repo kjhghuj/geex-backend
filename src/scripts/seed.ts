@@ -26,6 +26,7 @@ import {
   updateStoresWorkflow,
 } from "@medusajs/medusa/core-flows";
 import { ApiKey } from "../../.medusa/types/query-entry-points";
+import { buildProductStoryMetadata } from "./product-stories";
 
 const updateStoreCurrencies = createWorkflow(
   "update-store-currencies",
@@ -505,6 +506,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
         handle: product.handle,
         subtitle: product.subtitle,
         description: product.description,
+        metadata: buildProductStoryMetadata(product.handle),
         category_ids: [categoryByHandle.get(product.category)].filter(Boolean) as string[],
         weight: product.weight,
         status: ProductStatus.PUBLISHED,

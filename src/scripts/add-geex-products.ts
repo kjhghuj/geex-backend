@@ -9,6 +9,7 @@ import {
   createProductCategoriesWorkflow,
   createProductsWorkflow,
 } from "@medusajs/medusa/core-flows";
+import { buildProductStoryMetadata } from "./product-stories";
 
 const categories = [
   {
@@ -238,6 +239,7 @@ export default async function addGeexProducts({ container }: ExecArgs) {
         handle: product.handle,
         subtitle: product.subtitle,
         description: product.description,
+        metadata: buildProductStoryMetadata(product.handle),
         category_ids: [categoryByHandle.get(product.category)].filter(Boolean) as string[],
         weight: product.weight,
         status: ProductStatus.PUBLISHED,
